@@ -40,7 +40,7 @@
 
 /* Includes ---------------------------------------------------------------- */
 #include <PDM.h>
-#include <dl_cnn_voice_inferencing_inferencing.h>
+#include <dl_cnn_voice_inferencing.h>
 
 /** Audio buffers, pointers and selectors */
 typedef struct {
@@ -85,7 +85,7 @@ void loop()
   while (Serial.available() > 0) {
     char incomingCharacter = Serial.read();
     if (incomingCharacter == '1') {
-      delay(350);
+      delay(400);
 
       ei_printf("Recording...\n");
 
@@ -114,6 +114,7 @@ void loop()
                 result.timing.dsp, result.timing.classification, result.timing.anomaly);
       ei_printf(": \n");
       for (size_t ix = 0; ix < EI_CLASSIFIER_LABEL_COUNT; ix++) {
+        ei_printf("    %s: %.5f\n", result.classification[ix].label, result.classification[ix].value);
         if (result.classification[ix].value > 0.5) {
           Serial.println("Highest Prediction Classifier is: " + String(result.classification[ix].label) + "\nAccuracy is: " + String(result.classification[ix].value, 2));
         }
